@@ -8,6 +8,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    // Register the service worker on client-side only
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/firebase-messaging-sw.js")
@@ -18,7 +19,12 @@ export default function Home() {
           console.error("Service Worker registration failed:", error)
         );
     }
-  }, []);
+
+    // Clean up service worker registration when component unmounts (optional)
+    return () => {
+      // Any cleanup logic can go here if needed
+    };
+  }, []); // Empty dependency array means it runs only once on mount
 
   const requestPermission = async () => {
     try {
